@@ -14,6 +14,7 @@ namespace GMM_FIELD
 {
     public partial class GMM : Form
     {
+        //verger
         StreamWriter OUT = new StreamWriter("OUT.txt");
         StreamWriter gmm_out = new StreamWriter("gmm_out.txt");
         int lP = 0;//количество частиц
