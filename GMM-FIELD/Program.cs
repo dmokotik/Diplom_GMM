@@ -14,6 +14,7 @@ namespace GMM_FIELD
         [STAThread]
         static void Main()
         {
+            //hopppu
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
