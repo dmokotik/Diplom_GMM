@@ -14,7 +14,6 @@ namespace GMM_FIELD
 {
     public partial class GMM : Form
     {
-        //giojp
         StreamWriter OUT = new StreamWriter("OUT.txt");
         StreamWriter gmm_out = new StreamWriter("gmm_out.txt");
         int lP = 0;//количество частиц
@@ -1933,7 +1932,7 @@ namespace GMM_FIELD
             string[] obj = spl[0].Split(';');
             np = Convert.ToInt32(obj[0]);
             int nLp = Convert.ToInt32(obj[1]);
-            int NXMAX = 3000, nangmax = 181, MOR = 181, ncmax = 180;
+            const int NXMAX = 3000, nangmax = 181, MOR = 181, ncmax = 180;
             nmp = np * (np + 2);
             nmp0 = (np + 1) * (np + 4) / 2;
             ni0 = np * (np + 1) * (2 * np + 1) / 3 + np * np;
@@ -1959,7 +1958,7 @@ namespace GMM_FIELD
             double[,] r0 = new double[6, nLp], r00 = new double[3, nLp];
             double[] x = new double[nLp], dang = new double[nangmax], c0i = new double[nLp], c1i = new double[nLp];
             double[] rsr0 = new double[NXMAX], rsi0 = new double[NXMAX], rsx0 = new double[NXMAX], px0 = new double[NXMAX];
-            double[] w1 = new double[np], w2 = new double[np], w3 = new double[np], w4 = new double[np];
+            
             double[,] rsr = new double[np, nLp], rsi = new double[np, nLp], rsx = new double[np, nLp], px = new double[np, nLp];
             double[] betar = new double[MOR], thetr = new double[MOR], phair = new double[MOR];
             smue = new double[4, 4];
@@ -2150,9 +2149,9 @@ namespace GMM_FIELD
             phaimi = phaimi * pih / 90;
             phaimx = phaimx * pih / 90;
             if (idc > 0)
-                orientcd(betami, betamx, thetmi, thetmx, phaimi, phaimx, MOR, nbeta, nthet, nphai, betar, thetr, phair);
+                orientcd(betami, betamx, thetmi, thetmx, phaimi, phaimx, nbeta, nthet, nphai, betar, thetr, phair);
             else
-                orientud(betami, betamx, thetmi, thetmx, phaimi, phaimx, MOR, nbeta, nthet, nphai, betar, thetr, phair);
+                orientud(betami, betamx, thetmi, thetmx, phaimi, phaimx, nbeta, nthet, nphai, betar, thetr, phair);
             if(idMie==1)
             {
                 OUT.WriteLine("*** Calculating only coherent Mie-scattering ***");
@@ -2174,16 +2173,16 @@ namespace GMM_FIELD
 
             r0[0,0]=0;
             r0[1,0]=0;
-            r0[2,0]=0.04;
-            r0[3,0]=-0.04;
-            r0[4,0]=0.02442;
-            r0[5, 0] = 1.81254;
+            r0[2,0]=-0.004;
+            r0[3,0]=0.04;
+            r0[4, 0] = 0.19402;
+            r0[5, 0] = 1.38224;
             r0[0,1]=0;
             r0[1,1]=0;
-            r0[2, 1] = 0.6;
-            r0[3, 1] = -0.6;
-            r0[4, 1] = 1.58908;
-            r0[5, 1] = 0.06134;
+            r0[2, 1] = 0.3;
+            r0[3, 1] = 0.006;
+            r0[4, 1] = 1.84928;
+            r0[5, 1] = 0.51614;
             //for (int i = 0; i < nL; i++)
             //    for (int j = 0; j < 6; j++)
             //        r0[j, i] = Convert.ToDouble(dataGridView1[j, i].Value);
@@ -2239,13 +2238,12 @@ namespace GMM_FIELD
                 else
                 {
                     OUT.WriteLine("sphere #" + i + "   individual size parameter: "+x[i-1].ToString());
-
-                    abMiexud(x[i - 1], reff[i - 1], np, NXMAX, out nmax[i - 1], an, bn, NADD, rsr0, rsi0, rsx0, px0, w1, w2, w3, w4, eps);         
+                    abMiexud(x[i - 1], reff[i - 1], np, NXMAX, out nmax[i - 1], an, bn, NADD, rsr0, rsi0, rsx0, px0, eps);         
                     if (nmax[i - 1] > np)
                     {
                         OUT.WriteLine("Parameter np too small, must be > " + nmax[i - 1]);
                         OUT.WriteLine("Please change np in gmm01f.par, recompile, then try again");
-                        OUT.Close();
+                       // OUT.Close();
                         
                     }
                     else
@@ -2279,7 +2277,6 @@ namespace GMM_FIELD
                 if (nmax[i - 1] > nmax0)
                     nmax0 = nmax[i - 1];
             }
-            
             //StreamWriter gmm01f_w = new StreamWriter("gmm01f.out");
             double cextx = 0, cexty = 0, cabsx = 0, cabsy = 0, cscax = 0;
             double cscay = 0, cprx = 0, cpry = 0, cbakx = 0, cbaky = 0;
@@ -2310,7 +2307,7 @@ namespace GMM_FIELD
                 gmm_out.WriteLine("input file: Ag-Si-2s-405nm.k");
 
             gmm_out.Close();
-
+            
             OUT.WriteLine();
             OUT.WriteLine("original input sphere-positions: ");
 
@@ -4178,7 +4175,7 @@ namespace GMM_FIELD
             s[3, 2] = (s1s2c - s3s4c).Imaginary;
             s[3, 3] = (s1s2c - s3s4c).Real;
         }                      /**************/
-        private void orientcd(double BETAMI, double BETAMX, double THETMI, double THETMX, double PHIMIN, double PHIMAX, int MXTHET, double NBETA, double NTHETA, double NPHI, double[] BETA, double[] THETA, double[] PHI)
+        private void orientcd(double BETAMI, double BETAMX, double THETMI, double THETMX, double PHIMIN, double PHIMAX, double NBETA, double NTHETA, double NPHI, double[] BETA, double[] THETA, double[] PHI)
         {
             double delta;
             BETA[0] = BETAMI;
@@ -4211,7 +4208,7 @@ namespace GMM_FIELD
                     PHI[j - 1] = PHI[0] + delta * (double)(j - 1);
             }
         }  /***/
-        private void orientud(double BETAMI, double BETAMX, double THETMI, double THETMX, double PHIMIN, double PHIMAX, int MXTHET, double NBETA, double NTHETA, double NPHI, double[] BETA, double[] THETA, double[] PHI)
+        private void orientud(double BETAMI, double BETAMX, double THETMI, double THETMX, double PHIMIN, double PHIMAX, double NBETA, double NTHETA, double NPHI, double[] BETA, double[] THETA, double[] PHI)
         {
             double delta;
             BETA[0] = BETAMI;
@@ -4542,8 +4539,9 @@ namespace GMM_FIELD
                 }
             }
         }                                                /**************/
-        private void abMiexud(double X, Complex REFREL, int NP, int NMAX, out int NM, Complex[] AN, Complex[] BN, int NADD, double[] RSR, double[] RSI, double[] RSX, double[] px, double[] AR, double[] AI, double[] BR, double[] BI, double EPS)
+        private void abMiexud(double X, Complex REFREL, int NP, int NMAX, out int NM, Complex[] AN, Complex[] BN, int NADD, double[] RSR, double[] RSI, double[] RSX, double[] px, double EPS)
         {
+            double[] AR = new double[np], AI = new double[np], BR = new double[np], BI = new double[np];
             double XM = 0, YM = 0, SNX = 0, CNM1X = 0, CNX = 0, CNM2X = 0;
             double ALN, BEN, PZD, SNM1X;
             int M = 0;
@@ -4572,113 +4570,122 @@ namespace GMM_FIELD
             if (NX > NMAX)
             {
                 OUT.WriteLine("Parameter NXMAX too small");
-                OUT.WriteLine("NXMAX must be greater than " +NX);
+                OUT.WriteLine("NXMAX must be greater than " + NX);
                 OUT.WriteLine("Please correct NXMAX in main code, recompile, then try again");
-                OUT.Close();
-                Close();
-            }
-            else if (NM > NP)
-            {
-                OUT.WriteLine("Parameter np too small");
-                OUT.WriteLine("np must be greater than " + NM);
-                OUT.WriteLine("Please correct np in gmm01f.par, recompile the code, then try again");
-                OUT.Close();
                 Close();
             }
             else
             {
-                double PNX = X / (double)(2 * NX + 3);
-                double PNR = XMX / (double)(2 * NX + 3);
-                double PNI = YMX / (double)(2 * NX + 3);
-                int k = 1;
-                bool flag1 = true;
-                while (k <= NX && flag1)
+                if (NM > NP)
                 {
-                    N = NX - k + 1;
-                    CN = (double)(N);
-                    ALN = (2 * CN + 1) * XMX / RP2 - PNR;
-                    BEN = (2 * CN + 1) * YMX / RP2 + PNI;
-                    RSR[N - 1] = -CN * XMX / RP2 + ALN;
-                    RSI[N - 1] = CN * YMX / RP2 - BEN;
-                    PZD = ALN * ALN + BEN * BEN;
-                    PNR = ALN / PZD;
-                    PNI = BEN / PZD;
-                    RSX[N - 1] = (CN + 1) / X - PNX;
-                    if (N != 1)
-                    {
-                        PNX = X / (2 * CN + 1 - PNX * X);
-                        px[N - 1] = PNX;
-                    }
-                    else
-                        flag1 = false;
-                    k++;
+                    OUT.WriteLine("Parameter np too small");
+                    OUT.WriteLine("np must be greater than " + NM);
+                    OUT.WriteLine("Please correct np in gmm01f.par, recompile the code, then try again");
+                    NM = 0;
+                    Close();
                 }
-                SNM1X = Math.Sin(X);
-                CNM1X = Math.Cos(X);
-                if (X - 0.1 < 0)
-                    SNX = Math.Pow(X, (double)2 / 3) - Math.Pow(X, (double)4 / 30) + Math.Pow(X, (double)6 / 840) - Math.Pow(X, (double)8 / 45360);
                 else
-                    SNX = SNM1X / X - CNM1X;
-                CNX = CNM1X / X + SNM1X;
-                N = 1;
-                flag1 = true;
-                while (N <= NX && N <= AR.Length && flag1)
                 {
-                    px[N - 1] = SNX;
-                    double C = (double)(N);
-                    double DCNX = CNM1X - C * CNX / X;
-                    double DSNX = RSX[N - 1] * SNX;
-                    double ANNR = RSR[N - 1] * SNX - XM * DSNX;
-                    double ANNI = RSI[N - 1] * SNX - YM * DSNX;
-                    double TA1 = RSR[N - 1] * SNX - RSI[N - 1] * CNX;
-                    double TA2 = RSI[N - 1] * SNX + RSR[N - 1] * CNX;
-                    double ANDR = TA1 - XM * DSNX + YM * DCNX;
-                    double ANDI = TA2 - XM * DCNX - YM * DSNX;
-                    double AND = ANDR * ANDR + ANDI * ANDI;
-                    double BNNR = (XM * RSR[N - 1] - YM * RSI[N - 1]) * SNX - DSNX;
-                    double BNNI = (XM * RSI[N - 1] + YM * RSR[N - 1]) * SNX;
-                    double TB1 = RSR[N - 1] * SNX - RSI[N - 1] * CNX;
-                    double TB2 = RSR[N - 1] * CNX + RSI[N - 1] * SNX;
-                    double BNDR = XM * TB1 - YM * TB2 - DSNX;
-                    double BNDI = XM * TB2 + YM * TB1 - DCNX;
-                    double BND = BNDR * BNDR + BNDI * BNDI;
-                    AR[N - 1] = (ANNR * ANDR + ANNI * ANDI) / AND;
-                    AI[N - 1] = (ANNI * ANDR - ANNR * ANDI) / AND;
-                    BR[N - 1] = (BNNR * BNDR + BNNI * BNDI) / BND;
-                    BI[N - 1] = (BNNI * BNDR - BNNR * BNDI) / BND;
-                    double TI = AR[N - 1] * AR[N - 1] + AI[N - 1] * AI[N - 1] + BR[N - 1] * BR[N - 1] + BI[N - 1] * BI[N - 1];
-                    TI = TI / (AR[0] * AR[0] + AI[0] * AI[0] + BR[0] * BR[0] + BI[0] * BI[0]);
-                    if (TI - CTC < 0)
+                    double PNX = X / (double)(2 * NX + 3);
+                    double PNR = XMX / (double)(2 * NX + 3);
+                    double PNI = YMX / (double)(2 * NX + 3);
+                    int k = 1;
+                    bool flag1 = true;
+                    while (k <= NX && flag1)
                     {
-                        OUT.WriteLine("*** NOTE THAT THE FIELD-EXPANSION TRANCATION");
-                        OUT.WriteLine("*** IS DETERMINED BY eps GIVEN IN THE INPUT");
-                        OUT.WriteLine("*** FILE gmm01f.in");
-                        OUT.WriteLine("*** IN CASE YOU NEED A HIGHER ORDER, eps MUST");
-                        OUT.WriteLine(" *** BE SMALLER THAN THE CURRENT VALUE  " +EPS);
-                        flag1 = false;
+                        N = NX - k + 1;
+                        CN = (double)(N);
+                        ALN = (2 * CN + 1) * XMX / RP2 - PNR;
+                        BEN = (2 * CN + 1) * YMX / RP2 + PNI;
+                        RSR[N - 1] = -CN * XMX / RP2 + ALN;
+                        RSI[N - 1] = CN * YMX / RP2 - BEN;
+                        PZD = ALN * ALN + BEN * BEN;
+                        PNR = ALN / PZD;
+                        PNI = BEN / PZD;
+                        RSX[N - 1] = (CN + 1) / X - PNX;
+                        if (N != 1)
+                        {
+                            PNX = X / (2 * CN + 1 - PNX * X);
+                            px[N - 1] = PNX;
+                        }
+                        else
+                            flag1 = false;
+                        k++;
                     }
-                    else if (NM - N <= 0)
-                        flag1 = false;
-                    else if (N - NX >= 0)
-                        flag1 = false;
+                    SNM1X = Math.Sin(X);
+                    CNM1X = Math.Cos(X);
+                    if ((X - 0.1) < 0)
+                        SNX = Math.Pow(X,2) / 3 - Math.Pow(X,4) / 30 + Math.Pow(X, 6) / 840 - Math.Pow(X, 8) / 45360;
                     else
+                        SNX = SNM1X / X - CNM1X;
+                    CNX = CNM1X / X + SNM1X;
+                    N = 1;
+                    flag1 = true;
+                    while (N <= NX && flag1)
                     {
-                        M = N + 1;
-                        SNX = px[M - 1] * SNX;
-                        CNM2X = CNM1X;
-                        CNM1X = CNX;
-                        CNX = (2 * C + 1) * CNM1X / X - CNM2X;
+                        px[N - 1] = SNX;
+                        double C = (double)(N);
+                        double DCNX = CNM1X - C * CNX / X;
+                        double DSNX = RSX[N - 1] * SNX;
+                        double ANNR = RSR[N - 1] * SNX - XM * DSNX;
+                        double ANNI = RSI[N - 1] * SNX - YM * DSNX;
+                        double TA1 = RSR[N - 1] * SNX - RSI[N - 1] * CNX;
+                        double TA2 = RSI[N - 1] * SNX + RSR[N - 1] * CNX;
+                        double ANDR = TA1 - XM * DSNX + YM * DCNX;
+                        double ANDI = TA2 - XM * DCNX - YM * DSNX;
+                        double AND = ANDR * ANDR + ANDI * ANDI;
+                        double BNNR = (XM * RSR[N - 1] - YM * RSI[N - 1]) * SNX - DSNX;
+                        double BNNI = (XM * RSI[N - 1] + YM * RSR[N - 1]) * SNX;
+                        double TB1 = RSR[N - 1] * SNX - RSI[N - 1] * CNX;
+                        double TB2 = RSR[N - 1] * CNX + RSI[N - 1] * SNX;
+                        double BNDR = XM * TB1 - YM * TB2 - DSNX;
+                        double BNDI = XM * TB2 + YM * TB1 - DCNX;
+                        double BND = BNDR * BNDR + BNDI * BNDI;
+                        
+                        AR[N - 1] = (ANNR * ANDR + ANNI * ANDI) / AND;
+                        AI[N - 1] = (ANNI * ANDR - ANNR * ANDI) / AND;
+                        BR[N - 1] = (BNNR * BNDR + BNNI * BNDI) / BND;
+                        BI[N - 1] = (BNNI * BNDR - BNNR * BNDI) / BND;
+                        double TI = AR[N - 1] * AR[N - 1] + AI[N - 1] * AI[N - 1] + BR[N - 1] * BR[N - 1] + BI[N - 1] * BI[N - 1];
+                        TI = TI / (AR[0] * AR[0] + AI[0] * AI[0] + BR[0] * BR[0] + BI[0] * BI[0]);
+                        if (TI - CTC < 0)
+                        {
+                            OUT.WriteLine("*** NOTE THAT THE FIELD-EXPANSION TRANCATION");
+                            OUT.WriteLine("*** IS DETERMINED BY eps GIVEN IN THE INPUT");
+                            OUT.WriteLine("*** FILE gmm01f.in");
+                            OUT.WriteLine("*** IN CASE YOU NEED A HIGHER ORDER, eps MUST");
+                            OUT.WriteLine(" *** BE SMALLER THAN THE CURRENT VALUE  " + EPS);
+                            flag1 = false;
+                        }
+                        else
+                        {
+                            if (NM - N <= 0)
+                                flag1 = false;
+                            else
+                            {
+                                if (N - NX >= 0)
+                                    flag1 = false;
+                                else
+                                {
+                                    M = N + 1;
+                                    SNX = px[M - 1] * SNX;
+                                    CNM2X = CNM1X;
+                                    CNM1X = CNX;
+                                    CNX = (2 * C + 1) * CNM1X / X - CNM2X;
+                                }
+                            }
+                        }
+                        N++;
                     }
-                    N++;
-                }
-                NM = N;
-                for (int i = 1; i <= NM; i++)
-                {
-                    AN[i - 1] = new Complex(AR[i - 1], -AI[i - 1]);
-                    BN[i - 1] = new Complex(BR[i - 1], -BI[i - 1]);
+                    NM = N - 1;
+                    for (int i = 1; i <= NM; i++)
+                    {
+                        AN[i - 1] = new Complex(AR[i - 1], -AI[i - 1]);
+                        BN[i - 1] = new Complex(BR[i - 1], -BI[i - 1]);
+                    }
                 }
             }
-        }    /********/
+        }/********/
         private void trans(int nL, double[,] r0, int[] nmax, int[] uvmax, double fint, Complex[,] atr0, Complex[,] btr0, Complex[,] ek, double[,] drot, Complex[,] ass, Complex[,] bs, Complex[,] as1, Complex[,] bs1, int[] ind)
         {
             int ij = 0;
