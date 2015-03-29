@@ -29,12 +29,10 @@ namespace GMM_FIELD
         {
             InitializeComponent();
         }
-        
         private void GMM_Load(object sender, EventArgs e)
         {
             
         }
-
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             try
@@ -55,13 +53,11 @@ namespace GMM_FIELD
                 MessageBox.Show("Необходимо ввести целое положительное число!","Ошибка!");      
             }
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             button2.Enabled = button5.Enabled = button6.Enabled = button3.Enabled=true;
             button1.Enabled = false;
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
             bool f=true;
@@ -85,7 +81,6 @@ namespace GMM_FIELD
             else
                 MessageBox.Show("Введены не все данные!", "Предупреждение!");
         }
-
         private void button3_Click(object sender, EventArgs e)
         {
 
@@ -98,15 +93,12 @@ namespace GMM_FIELD
             textBox1.Text = "";
             button3.Enabled = false;
         }
-
         private void button4_Click(object sender, EventArgs e)
         {
             Close();
         }
-
         private void button5_Click(object sender, EventArgs e)
-        {
-            StreamWriter gmm_out = new StreamWriter("gmm_out.txt");        
+        {      
             StreamReader gmm = new StreamReader("gmm_in.txt");
             string GM = gmm.ReadToEnd();
             string[] spl = GM.Split('\n');
@@ -131,7 +123,7 @@ namespace GMM_FIELD
             besj = new double[2 * np + 2];
             besy = new double[2 * np + 2];
             p = new double[np + 1];
-            int u, v, u0;
+            int u=0, v, u0;
             int[] uvmax = new int[nLp], ind = new int[nLp];
             nmax = new int[nLp];
             pih = Math.Acos(0);
@@ -151,7 +143,7 @@ namespace GMM_FIELD
             double[] cextyi = new double[nLp], cabsyi = new double[nLp], cscai = new double[nLp], cexti = new double[nLp];
             double[] cabsi = new double[nLp], assymxi = new double[nLp], assymyi = new double[nLp], assymi = new double[nLp];
             double[] cprxi = new double[nLp], cpryi = new double[nLp], cpri = new double[nLp];
-            Complex A, B, cmz, A0, B0, Aj, Bj, Aj2, Bj2, A2=new Complex(0,0), B2=new Complex(0,0), ephi, ci, cin;
+            Complex A, B, cmz, A0=0, B0=0, Aj, Bj, Aj2, Bj2, A2=new Complex(0,0), B2=new Complex(0,0), ephi, ci, cin;
             Complex[,] atr0 = new Complex[ni0, nij], btr0 = new Complex[ni0, nij], atr1 = new Complex[ni0, nij], btr1 = new Complex[ni0, nij];
             Complex[] at = new Complex[nmp], bt = new Complex[nmp], reff = new Complex[nLp], an = new Complex[np], bn = new Complex[np];
             Complex[,] ek = new Complex[np, nij], p0 = new Complex[nLp, nmp], q0 = new Complex[nLp, nmp];
@@ -485,13 +477,9 @@ namespace GMM_FIELD
             }
             double iram = 0;
             if (idpq == 1)
-                gmm_out.WriteLine("input file: Ag-Si-2s-405nm.k");
-
-            gmm_out.Close();
-            
+                OUT.WriteLine("input file: Ag-Si-2s-405nm.k");
             OUT.WriteLine();
             OUT.WriteLine("original input sphere-positions: ");
-
             int ii = 1;
             OUT.WriteLine(ii+"   "+ r0[0, 0]+"   "+ r0[1, 0]+"   "+ r0[2, ii-1]);
             ii = nL;
@@ -604,7 +592,8 @@ namespace GMM_FIELD
                                         x0 = r0[0, i - 1] - r0[0, j - 1];
                                         y0 = r0[1, i - 1] - r0[1, j - 1];
                                         z0 = r0[2, i - 1] - r0[2, j - 1];
-                                        new carsphd(xt,x0, y0, z0, out d, out sphi, out cphi);
+                                        new carsphd(out xt,x0, y0, z0, out d, out sphi, out cphi);
+                                        
                                         temp = (r0[3, i - 1] + r0[3, j - 1]) / d;
                                         if (temp > fint)
                                         {
@@ -645,30 +634,9 @@ namespace GMM_FIELD
                                         }
                                     }
                                 }
-
-                                //OUT.WriteLine("atr0[530112, 1]      " + atr0[530111, 0]);
-                                //OUT.WriteLine("atr0[17668, 1]      " + atr0[17667, 0]);
-                                //OUT.WriteLine("atr0[300398,1]      " + atr0[300397, 0]);
-                                //OUT.WriteLine("atr0[ni0,1]      " + atr0[ni0 - 1, 0]);
-
-                                //OUT.WriteLine("btr0[132526, 1]      " + btr0[132525, 0]);
-                                //OUT.WriteLine("btr0[141362, 1]      " + btr0[141361, 0]);
-                                //OUT.WriteLine("btr0[265056,1]      " + btr0[265055, 0]);
-                                //OUT.WriteLine("btr0[ni0,1]      " + btr0[ni0 - 1, 0]);
-
-                                //OUT.WriteLine("atr1[1, 1]      " + atr1[0, 0]);
-                                //OUT.WriteLine("atr1[11, 1]      " + atr1[10, 0]);
-                                //OUT.WriteLine("atr1[121,1]      " + atr1[120, 0]);
-                                //OUT.WriteLine("atr1[ni0,1]      " + atr1[ni0 - 1, 0]);
-
-                                //OUT.WriteLine("btr1[1, 1]      " + btr1[0, 0]);
-                                //OUT.WriteLine("btr1[11, 1]      " + btr1[10, 0]);
-                                //OUT.WriteLine("btr1[121,1]      " + btr1[120, 0]);
-                                //OUT.WriteLine("btr1[ni0,1]      " + btr1[ni0 - 1, 0]);
-                         
                                 indpol = 0;
                                 factor = factor1;
-
+                                
                                 OUT.WriteLine("orien.# " + iram+"     Solving for x-pol. inci. state");
                                 #endregion
                                 #region
@@ -750,7 +718,6 @@ namespace GMM_FIELD
                                                     if (ind[i - 1] <= 0)
                                                     {
                                                         c1i[i - 1] = 0;
-                                                        /*as1,bs1 (определяются неверно)*/
                                                         for (imn = 1; imn <= uvmax[i - 1]; imn++)
                                                         {
                                                             int n = (int)Math.Sqrt((double)imn);
@@ -766,7 +733,7 @@ namespace GMM_FIELD
                                                             bs[i - 1, imn - 1] = bs0[i - 1, imn - 1];
                                                         }
                                                     }
-                                                }
+                                                }                                         
                                                 cext0 = 0;
                                                 cext1 = 0;
                                                 for (int i = 1; i <= nL; i++)
@@ -840,8 +807,6 @@ namespace GMM_FIELD
                                                 flag = false;
                                             if (flag)
                                             {
-
-
                                                 A0 = new Complex(0, 0);
                                                 for (int i = 1; i <= nL; i++)
                                                 {
@@ -1035,6 +1000,7 @@ namespace GMM_FIELD
                                     new trans(np, atr, d, nmp, nL, r0, nmax, uvmax, fint, atr1, btr1, ek, drot, ass, bs, as1, bs1, ind);
                                     for (int i = 1; i <= nL; i++)
                                     {
+                                        
                                         for (imn = 1; imn <= uvmax[i - 1]; imn++)
                                         {
                                             at[imn - 1] = ass[i - 1, imn - 1] + as1[i - 1, imn - 1];
@@ -1060,14 +1026,14 @@ namespace GMM_FIELD
                                                 if (n != nmax[i - 1])
                                                 {
                                                     u = (n + 1) * (n + 2) + m;
-                                                    double fnp = fnr[n + m] * fnr[n - m] * pp;
+                                                    double fnp = fnr[n + m+1] * fnr[n - m+1] * pp;
                                                     A0 = A0 + fnp * at[u - 1];
                                                     B0 = B0 + fnp * bt[u - 1];
                                                 }
                                                 if (n != 1 && Math.Abs(m) <= (n - 1))
                                                 {
                                                     u = (n - 1) * n + m;
-                                                    double fn = fnr[n + m - 1] * fnr[n - m - 1] * t;
+                                                    double fn = fnr[n + m] * fnr[n - m] * t;
                                                     A0 = A0 + fn * at[u - 1];
                                                     B0 = B0 + fn * bt[u - 1];
                                                 }
@@ -1099,7 +1065,7 @@ namespace GMM_FIELD
                                         B = new Complex(0, 0);
                                         for (int n = 1; n <= nmax[j - 1]; n++)
                                         {
-                                            double rn = fnr[2 * n];
+                                            double rn = fnr[2 * n+1];
                                             int m0 = n * n + n + 1;
                                             u0 = n * n + n - 1;
                                             A = A + rn * (ass[j - 1, m0 - 1] + bs[j - 1, m0 - 1]);
@@ -1124,7 +1090,6 @@ namespace GMM_FIELD
                                             temp1 = -A.Imaginary;
                                             A = px[n - 1, j - 1] * (reff[j - 1] * rsx[n - 1, j - 1] - (new Complex(rsr[n - 1, j - 1], rsi[n - 1, j - 1])));
                                             temp = Complex.Abs(A) * Complex.Abs(A);
-
                                             if (temp == 0)
                                                 dn = 0;
                                             else
@@ -1137,7 +1102,7 @@ namespace GMM_FIELD
                                                 cn = 0;
                                             else
                                                 cn = temp1 / temp;
-                                            for (int m = -n; m < n; m++)
+                                            for (int m = -n; m <= n; m++)
                                             {
                                                 int i = n * n + n + m;
                                                 temp1 = dn * Complex.Abs(ass[j - 1, i - 1]) * Complex.Abs(ass[j - 1, i - 1]) + cn * Complex.Abs(bs[j - 1, i - 1]) * Complex.Abs(bs[j - 1, i - 1]);
@@ -1271,7 +1236,7 @@ namespace GMM_FIELD
                                                 B2 = new Complex(0, 0);
                                                 Aj = new Complex(0, 0);
                                                 Bj = new Complex(0, 0);
-                                                Aj2 = new Complex(0, 0);
+                                                Aj2 = 0;
                                                 Bj2 = new Complex(0, 0);
                                                 rm = -rm;
                                                 for (int j = m; j <= nmax0; j++)
@@ -1341,6 +1306,7 @@ namespace GMM_FIELD
                                         OUT.WriteLine("orien.# " + iram + "     Solving for y-pol. inci. state");
                                 }
                                 #endregion
+                                
                                 for (int i = 1; i <= nang2; i++)
                                 {
                                     i22[i - 1] = i22[i - 1] + Complex.Abs(s2x[0, i - 1]) * Complex.Abs(s2x[0, i - 1]);
@@ -1356,38 +1322,20 @@ namespace GMM_FIELD
                                     }
                                 }
                                 cbakx = cbakx + Complex.Abs(s2x[0, (int)nang2 - 1]) * Complex.Abs(s2x[0, (int)nang2 - 1]);
-                                cbaky = cbaky + Complex.Abs(s1y[0, (int)nang2 - 1]) * Complex.Abs(s1y[0, (int)nang2 - 1]);
+                                cbaky = cbaky + Complex.Abs(s1y[0, (int)nang2 - 1]) * Complex.Abs(s1y[0, (int)nang2 - 1]);                               
                                 cz = 4 / (gcs * k * k);
                                 if (idpq == 1)
                                 {
                                     temp1 = s2x[0, 0].Real * cz;
                                     temp2 = s1y[0, 0].Real * cz;
-                                    OUT.WriteLine(iram.ToString() + " " + thet / pih * 90 + " " + phai / pih * 90 + " " + temp1 + " " + s2x[0, 0].Imaginary * cz + " " + temp2 + " " + s1y[0, 0].Imaginary * cz);
+                                    OUT.WriteLine(iram + " " + thet / pih * 90 + " " + phai / pih * 90 + " " + temp1 + " " + s2x[0, 0].Imaginary * cz + " " + temp2 + " " + s1y[0, 0].Imaginary * cz);
                                     if(idc>0)
-                                        OUT.WriteLine(iram.ToString() + " " + dang[0] + " " + Math.Cos(thet) + " " + phai*90/pih);
+                                        OUT.WriteLine(iram + " " + dang[0] + " " + Math.Cos(thet) + " " + phai*90/pih);
                                     else
-                                        OUT.WriteLine(iram.ToString() + " " + dang[0] + " " + thet*90/pih + " " + phai*90/pih);
+                                        OUT.WriteLine(iram + " " + dang[0] + " " + thet*90/pih + " " + phai*90/pih);
                                 }
                                 if (idMie != 1)
                                 {
-                                    //if(iram<10)
-                                    //{
-                                    //    write(cnr1,'(i1)') iram
-                                    //    tailn='00'//cnr1
-                                    //}
-                                    //else
-                                    //{
-                                    //    if(iram<100)
-                                    //    {
-                                    //        write(cnr2,'(i2)') iram
-                                    //        tailn='0'//cnr2
-                                    //    }
-                                    //    else
-                                    //    {
-                                    //        write(cnr3,'(i3)') iram
-                                    //        tailn=cnr3
-                                    //    }
-                                    //}
                                     if (nram == 1)
                                     {
                                         if (iram == 1)
@@ -1402,13 +1350,13 @@ namespace GMM_FIELD
                                         gmm01fAout_w.WriteLine("wavelength: " + w + "      input filename: Ag-Si-2s-405nm.k");
                                         gmm01fAout_w.WriteLine("sphere#,x,y,z,radius,complex refractive index:");
                                         for (int i = 1; i <= nL; i++)
-                                            gmm01fAout_w.WriteLine(i.ToString() + " " + r0[0, i-1].ToString() + " " + r0[1, i-1].ToString() + " " + r0[2, i-1].ToString() + " " + r0[3, i-1].ToString() + " " + r0[4, i-1].ToString() + " " + r0[5, i-1].ToString());
+                                            gmm01fAout_w.WriteLine("{0,5:d} {1,10:f4} {2,10:f4} {3,10:f4} {4,10:f4} {5,10:f4} {6,10:f4}", i, r0[0, i - 1], r0[1, i - 1], r0[2, i - 1], r0[3, i - 1], r0[4, i - 1], r0[5, i - 1]);
                                         gmm01fAout_w.WriteLine("scattering angle, s2x(complex), s3y(complex)");
                                         gmm01fAout_w.WriteLine("                  s4x(complex), s1y(complex)");
                                         for (int i = 1; i <= nang2; i++)
                                         {
-                                            gmm01fAout_w.WriteLine(dang[i - 1].ToString() + " " + s2x[0, i - 1].Real.ToString() + " " + s2x[0, i - 1].Imaginary.ToString() + " " + s3y[0, i - 1].Real.ToString() + " " + s3y[0, i - 1].Imaginary.ToString());
-                                            gmm01fAout_w.WriteLine(s4x[0, i - 1].Real.ToString() + " " + s4x[0, i - 1].Imaginary.ToString() + " " + s1y[0, i - 1].Real.ToString() + " " + s1y[0, i - 1].Imaginary.ToString());
+                                            gmm01fAout_w.WriteLine("{0,8:f2} {1,14:f6} {2,14:f6} {3,14:f6} {4,14:f6}", dang[i - 1], s2x[0, i - 1].Real, s2x[0, i - 1].Imaginary, s3y[0, i - 1].Real, s3y[0, i - 1].Imaginary);
+                                            gmm01fAout_w.WriteLine("         {0,14:f6} {1,14:f6} {2,14:f6} {3,14:f6}", s4x[0, i - 1].Real, s4x[0, i - 1].Imaginary, s1y[0, i - 1].Real, s1y[0, i - 1].Imaginary);
                                         }
                                         gmm01fAout_w.Close();
                                     }
@@ -1418,15 +1366,13 @@ namespace GMM_FIELD
                     }
                 }
             }
-
             if (iram != nram)
             {
                 OUT.WriteLine("Note: iram not equal to nram!");
                 OUT.WriteLine("iram: "+iram+"   nram: "+nram);
             }
-
             if (idpq == 1)
-                gmm_out.Close();
+                OUT.Close();
             cz = nram;
             for (int i = 1; i <= nang2; i++)
             {
@@ -1459,11 +1405,9 @@ namespace GMM_FIELD
             cbakx = 2 * twopi * cbakx / cz;
             cbaky = 2 * twopi * cbaky / cz;
             double cbak = 0.5 * (cbakx + cbaky);
-
-            OUT.WriteLine(assym + "    " + assym0);
-            OUT.WriteLine("Cext,Cabs,Csca,Cbak,Cpr,<cos(theta)>");
-            OUT.WriteLine(cext + "   " + cabs + "   " + csca+"   "+cbak+"   "+(cext - cpr)+"   "+assym);
-
+            OUT.WriteLine("     {0,14:f6} {1,14:f6}",assym, assym0);
+            OUT.WriteLine("      Cext         Cabs         Csca         Cbak         Cpr        <cos(theta)>");
+            OUT.WriteLine("  {0,12:f5} {1,12:f5} {2,12:f5} {3,12:f5} {4,12:f5} {5,12:f5}", cext, cabs, csca, cbak, (cext - cpr), assym);
             cscax = 0;
             cscay = 0;
             cextx = 0;
@@ -1499,9 +1443,8 @@ namespace GMM_FIELD
             cpry = 2 * twopi * cpry / cz;
             cpr = 0.5 * (cprx + cpry);
             assym = cpr / csca;
-
-            OUT.WriteLine(cext + "   " + cabs + "   " + csca + "   " + cbak + "   " + (cext - cpr) + "   " + assym);
-
+            
+            OUT.WriteLine("  {0,12:f5} {1,12:f5} {2,12:f5} {3,12:f5} {4,12:f5} {5,12:f5}", cext, cabs, csca, cbak, (cext - cpr), assym);
             for (int i = 1; i <= nL; i++)
             {
                 cabsxi[i - 1] = 4 * pione * cabsxi[i - 1] / cz;
@@ -1522,18 +1465,13 @@ namespace GMM_FIELD
                 assymi[i - 1] = 0.5 * (cprxi[i - 1] + cpryi[i - 1]) / csca;
                 cprxi[i - 1] = cscaxi[i - 1] + cabsxi[i - 1] - cprxi[i - 1];
                 cpryi[i - 1] = cscayi[i - 1] + cabsyi[i - 1] - cpryi[i - 1];
-
-                OUT.WriteLine(i + "   " + cexti[i - 1] + "   " + cabsi[i - 1] + "   " + cscai[i - 1] + "   " + cpri[i - 1] + "   " + assymi[i - 1]);
-
+                OUT.WriteLine("{0,5:d} {1,14:f6} {2,14:f6} {3,14:f6} {4,14:f6} {5,14:f6}",i, cexti[i - 1], cabsi[i - 1], cscai[i - 1], cpri[i - 1], assymi[i - 1]);
             }
-
             OUT.WriteLine("efficiencies for radiation pressure");
-            OUT.WriteLine(assym+"   "+assym0);
-            OUT.WriteLine(assym + "   " + (cext - cpr) + "   " + assymx + "   " + (cextx - cprx) + "   " + assymy + "   " + (cexty - cpry));
-
+            OUT.WriteLine("     {0,12:f6} {1,12:f6}",assym,assym0);
+            OUT.WriteLine("     {0,12:f6} {1,12:f6} {2,12:f6} {3,12:f6} {4,12:f6} {5,12:f6}", assym, (cext - cpr), assymx, (cextx - cprx), assymy, (cexty - cpry));
             for (int i = 1; i <= nL; i++)
-                OUT.WriteLine(i + "   " + assymi[i - 1] + "   " + cpri[i - 1] + "   " + assymxi[i - 1] + "   " + cprxi[i - 1] + "   " + assymyi[i - 1] + "   " + cpryi[i - 1]);
-
+                OUT.WriteLine("{0,5:d} {1,12:f6} {2,12:f6} {3,12:f6} {4,12:f6} {5,12:f6} {6,12:f6}", i, assymi[i - 1], cpri[i - 1], assymxi[i - 1], cprxi[i - 1], assymyi[i - 1], cpryi[i - 1]);
             betami = betami * 90 / pih;
             betamx = betamx * 90 / pih;
             thetmi = thetmi * 90 / pih;
@@ -1541,15 +1479,15 @@ namespace GMM_FIELD
             phaimi = phaimi * 90 / pih;
             phaimx = phaimx * 90 / pih;
             StreamWriter crgmm01f_w = new StreamWriter("crgmm01f.out");
-            crgmm01f_w.WriteLine("crgmm01f.out                 Total and individual-particle cross sections");
+            crgmm01f_w.WriteLine("crgmm01f.out                 (Total and individual-particle cross sections)");
             crgmm01f_w.WriteLine("input sphere-aggregate filename: Ag-Si-2s-405nm.k");
-            crgmm01f_w.WriteLine(nbeta.ToString() + " " + nthet.ToString() + " " + nphai.ToString());
-            crgmm01f_w.WriteLine("Ranges of Euler angles: {0} {1} {2} {3} {4} {5}", betami.ToString(), betamx.ToString(), thetmi.ToString(), thetmx.ToString(), phaimi.ToString(), phaimx.ToString());
+            crgmm01f_w.WriteLine("nbeta,nthet,nphai:    "+nbeta + " " + nthet + " " + nphai);
+            crgmm01f_w.WriteLine("Ranges of Euler angles: {0} {1} {2} {3} {4} {5}", betami, betamx, thetmi, thetmx, phaimi, phaimx);
             crgmm01f_w.WriteLine("# of orientations averaged: {0}", nram.ToString());
-            crgmm01f_w.WriteLine("Cext       Cabs      Csca     Cpr    <cos(theta)>");
-            crgmm01f_w.WriteLine("total {0} {1} {2} {3} {4}", cext.ToString(), cabs.ToString(), csca.ToString(), (cext - cpr).ToString(), assym.ToString());
+            crgmm01f_w.WriteLine("            Cext           Cabs           Csca           Cpr        <cos(theta)>");
+            crgmm01f_w.WriteLine("total {0,14:f9} {1,14:f9} {2,14:f9} {3,14:f9} {4,14:f9}", cext, cabs, csca, (cext - cpr), assym);
             for (int i = 1; i <= nL; i++)
-                crgmm01f_w.WriteLine("{0} {1} {2} {3} {4} {5}", i.ToString(), cexti[i - 1].ToString(), cabsi[i - 1].ToString(), cscai[i - 1].ToString(), cpri[i - 1].ToString(), assymi[i - 1].ToString());
+                crgmm01f_w.WriteLine("{0,5:d} {1,14:f9} {2,14:f9} {3,14:f9} {4,14:f9} {5,14:f9}", i, cexti[i - 1], cabsi[i - 1], cscai[i - 1], cpri[i - 1], assymi[i - 1]);
             crgmm01f_w.Close();
             cz = pione * gcvr * gcvr;
             assym = cpr / csca;
@@ -1588,42 +1526,38 @@ namespace GMM_FIELD
             double cbakxs = cbakxv * temp;
             double cbakys = cbakyv * temp;
             double cbaks = cbakv * temp;
-            // 222      format(1x,a1,6e13.5)
-            // 221      format(6x,a5,8x,a5,8x,a5,8x,a5,8x,a4,5x,a12)
-
-            OUT.WriteLine("Qextv,Qabsv,Qscav,Qbakv,Qprv,<cos(theta)>");
-            OUT.WriteLine("t" + "   " + cextv + "   " + cabsv + "   " + cscav + "   " + cbakv + "   " + cprv + "   " + assym);
-            OUT.WriteLine("x" + "   " + cextxv + "   " + cabsxv + "   " + cscaxv + "   " + cbakxv + "   " + cprxv + "   " + assymx);
-            OUT.WriteLine("y" + "   " + cextyv + "   " + cabsyv + "   " + cscayv + "   " + cbakyv + "   " + cpryv + "   " + assymy);
-            OUT.WriteLine("Qexts,Qabss,Qscas,Qbaks,Qprs,<cos(theta)>");
-            OUT.WriteLine("t" + "   " + cexts + "   " + cabss + "   " + cscas + "   " + cbaks + "   " + cprs + "   " + assym);
-            OUT.WriteLine("x" + "   " + cextxs + "   " + cabsxs + "   " + cscaxs + "   " + cbakxs + "   " + cprxs + "   " + assymx);
-            OUT.WriteLine("y" + "   " + cextys + "   " + cabsys + "   " + cscays + "   " + cbakys + "   " + cprys + "   " + assymy);
-
+            OUT.WriteLine("      Qextv        Qabsv        Qscav        Qbakv        Qprv     <cos(theta)>");
+            OUT.WriteLine("t {0,12:f5} {1,12:f5} {2,12:f5} {3,12:f5} {4,12:f5} {5,12:f5}", cextv, cabsv, cscav, cbakv, cprv, assym);
+            OUT.WriteLine("x {0,12:f5} {1,12:f5} {2,12:f5} {3,12:f5} {4,12:f5} {5,12:f5}", cextxv, cabsxv, cscaxv, cbakxv, cprxv, assymx);
+            OUT.WriteLine("y {0,12:f5} {1,12:f5} {2,12:f5} {3,12:f5} {4,12:f5} {5,12:f5}", cextyv, cabsyv, cscayv, cbakyv, cpryv, assymy);
+            OUT.WriteLine("      Qexts        Qabss        Qscas        Qbaks        Qprs     <cos(theta)>");
+            OUT.WriteLine("t {0,12:f5} {1,12:f5} {2,12:f5} {3,12:f5} {4,12:f5} {5,12:f5}", cexts, cabss, cscas, cbaks, cprs, assym);
+            OUT.WriteLine("x {0,12:f5} {1,12:f5} {2,12:f5} {3,12:f5} {4,12:f5} {5,12:f5}", cextxs, cabsxs, cscaxs, cbakxs, cprxs, assymx);
+            OUT.WriteLine("y {0,12:f5} {1,12:f5} {2,12:f5} {3,12:f5} {4,12:f5} {5,12:f5}", cextys, cabsys, cscays, cbakys, cprys, assymy);
             temp = -(cabs + csca - cext) / cext;
 
             OUT.WriteLine("Accuracy of this numerical solution: "+temp);
             OUT.Close();
 
             StreamWriter gmm01f_w = new StreamWriter("gmm01f.out");
-            gmm01f_w.WriteLine("gmm01f.out      --- input file: Ag-Si-2s-405nm.k xv: {0}   xs: {1}", xv, xs);
+            gmm01f_w.WriteLine("gmm01f.out        --- input file: Ag-Si-2s-405nm.k     xv: {0}      xs: {1}", xv, xs);
             gmm01f_w.WriteLine("Ranges of Euler angles: " + betami + "   " + betamx + "   " + thetmi + "   " + thetmx + "   " + phaimi + "   " + phaimx);
-            gmm01f_w.WriteLine("nbeta,nthet,nphai: " + "   " + nbeta + "   " + nthet + "   " + nphai + "   # of orientations averaged: "+nram);
-            gmm01f_w.WriteLine("Cext,Cabs,Csca,Cbak,Cpr,<cos(theta)>");
-            gmm01f_w.WriteLine("t" + "   " + cext + "   " + cabs + "   " + csca + "   " + cbak + "   " + (cext - cpr) + "   " + assym);
-            gmm01f_w.WriteLine("x" + "   " + cextx + "   " + cabsx + "   " + cscax + "   " + cbakx + "   " + (cextx - cprx) + "   " + assymx);
-            gmm01f_w.WriteLine("y" + "   " + cexty + "   " + cabsy + "   " + cscay + "   " + cbaky + "   " + (cexty - cpry) + "   " + assymy);
-            gmm01f_w.WriteLine("Qextv,Qabsv,Qscav,Qbakv,Qprv,<cos(theta)>");
-            gmm01f_w.WriteLine("t" + "   " + cextv + "   " + cabsv + "   " + cscav + "   " + cbakv + "   " + cprv + "   " + assym);
-            gmm01f_w.WriteLine("x" + "   " + cextxv + "   " + cabsxv + "   " + cscaxv + "   " + cbakxv + "   " + cprxv + "   " + assymx);
-            gmm01f_w.WriteLine("y" + "   " + cextyv + "   " + cabsyv + "   " + cscayv + "   " + cbakyv + "   " + cpryv + "   " + assymy);
-            gmm01f_w.WriteLine("Qexts,Qabss,Qscas,Qbaks,Qprs,<cos(theta)>");
-            gmm01f_w.WriteLine("t" + "   " + cexts + "   " + cabss + "   " + cscas + "   " + cbaks + "   " + cprs + "   " + assym);
-            gmm01f_w.WriteLine("x" + "   " + cextxs + "   " + cabsxs + "   " + cscaxs + "   " + cbakxs + "   " + cprxs + "   " + assymx);
-            gmm01f_w.WriteLine("y" + "   " + cextys + "   " + cabsys + "   " + cscays + "   " + cbakys + "   " + cprys + "   " + assymy);
-            gmm01f_w.WriteLine("s.a.,i11+i22,pol.,i11,i21,i12,i22");
+            gmm01f_w.WriteLine("nbeta,nthet,nphai:    " + nbeta + "    " + nthet + "    " + nphai + "      # of orientations averaged: "+nram);
+            gmm01f_w.WriteLine("       Cext         Cabs         Csca         Cbak         Cpr     <cos(theta)>");
+            gmm01f_w.WriteLine(" t {0,12:f5} {1,12:f5} {2,12:f5} {3,12:f5} {4,12:f5} {5,12:f5}", cext, cabs, csca, cbak, (cext - cpr), assym);
+            gmm01f_w.WriteLine(" x {0,12:f5} {1,12:f5} {2,12:f5} {3,12:f5} {4,12:f5} {5,12:f5}", cextx, cabsx, cscax, cbakx, (cextx - cprx), assymx);
+            gmm01f_w.WriteLine(" y {0,12:f5} {1,12:f5} {2,12:f5} {3,12:f5} {4,12:f5} {5,12:f5}", cexty, cabsy, cscay, cbaky, (cexty - cpry), assymy);
+            gmm01f_w.WriteLine("      Qextv        Qabsv        Qscav        Qbakv        Qprv     <cos(theta)>");
+            gmm01f_w.WriteLine(" t {0,12:f5} {1,12:f5} {2,12:f5} {3,12:f5} {4,12:f5} {5,12:f5}", cextv, cabsv, cscav, cbakv, cprv, assym);
+            gmm01f_w.WriteLine(" x {0,12:f5} {1,12:f5} {2,12:f5} {3,12:f5} {4,12:f5} {5,12:f5}", cextxv, cabsxv, cscaxv, cbakxv, cprxv, assymx);
+            gmm01f_w.WriteLine(" y {0,12:f5} {1,12:f5} {2,12:f5} {3,12:f5} {4,12:f5} {5,12:f5}", cextyv, cabsyv, cscayv, cbakyv, cpryv, assymy);
+            gmm01f_w.WriteLine("      Qexts        Qabss        Qscas        Qbaks        Qprs     <cos(theta)>");
+            gmm01f_w.WriteLine(" t {0,12:f5} {1,12:f5} {2,12:f5} {3,12:f5} {4,12:f5} {5,12:f5}", cexts, cabss, cscas, cbaks, cprs, assym);
+            gmm01f_w.WriteLine(" x {0,12:f5} {1,12:f5} {2,12:f5} {3,12:f5} {4,12:f5} {5,12:f5}", cextxs, cabsxs, cscaxs, cbakxs, cprxs, assymx);
+            gmm01f_w.WriteLine(" y {0,12:f5} {1,12:f5} {2,12:f5} {3,12:f5} {4,12:f5} {5,12:f5}", cextys, cabsys, cscays, cbakys, cprys, assymy);
+            gmm01f_w.WriteLine("    s.a.    i11+i22     pol.       i11          i21          i12          i22");
             for (int i = 1; i <= nang2; i++)
-                gmm01f_w.WriteLine(dang[i - 1] + "   " + inat[i - 1] + "   " + pol[i - 1] + "   " + i11[i - 1] + "   " + i21[i - 1] + "   " + i12[i - 1] + "   " + i22[i - 1]);
+                gmm01f_w.WriteLine("{0,7:f1} {1,12:f5} {2,8:f4} {3,12:f5} {4,12:f5} {5,12:f5} {6,12:f5}", dang[i - 1], inat[i - 1], pol[i - 1], i11[i - 1], i21[i - 1], i12[i - 1], i22[i - 1]);
             gmm01f_w.Close();
             StreamWriter mueller_out = new StreamWriter("mueller.out");
             mueller_out.WriteLine("mueller.out     (Mueller matrix)");
@@ -1637,19 +1571,19 @@ namespace GMM_FIELD
                 mueller_out.WriteLine("phi (in degrees): " + t);
                 for(int i=1;i<=nang2;i++)
                 {
-                    mueller_out.WriteLine(dang[i - 1] + "   " + mue[0, 0, jc - 1, i - 1] + "   " + mue[0, 1, jc - 1, i - 1] + "   " + mue[0, 2, jc - 1, i - 1] + "   " + mue[0, 3, jc - 1, i - 1]);
-                    mueller_out.WriteLine(mue[1, 0, jc - 1, i - 1] + "   " + mue[1, 1, jc - 1, i - 1] + "   " + mue[1, 2, jc - 1, i - 1] + "   " + mue[1, 3, jc - 1, i - 1]);
-                    mueller_out.WriteLine(mue[2, 0, jc - 1, i - 1] + "   " + mue[2, 1, jc - 1, i - 1] + "   " + mue[2, 2, jc - 1, i - 1] + "   " + mue[2, 3, jc - 1, i - 1]);
-                    mueller_out.WriteLine(mue[3, 0, jc - 1, i - 1] + "   " + mue[3, 1, jc - 1, i - 1] + "   " + mue[3, 2, jc - 1, i - 1] + "   " + mue[3, 3, jc - 1, i - 1]);
+                    mueller_out.WriteLine("{0,7:f1} {1,16:e7} {2,16:e7} {3,16:e7} {4,16:e7}", dang[i - 1], mue[0, 0, jc - 1, i - 1], mue[0, 1, jc - 1, i - 1], mue[0, 2, jc - 1, i - 1], mue[0, 3, jc - 1, i - 1]);
+                    mueller_out.WriteLine("        {0,16:e7} {1,16:e7} {2,16:e7} {3,16:e7}", mue[1, 0, jc - 1, i - 1], mue[1, 1, jc - 1, i - 1], mue[1, 2, jc - 1, i - 1], mue[1, 3, jc - 1, i - 1]);
+                    mueller_out.WriteLine("        {0,16:e7} {1,16:e7} {2,16:e7} {3,16:e7}", mue[2, 0, jc - 1, i - 1], mue[2, 1, jc - 1, i - 1], mue[2, 2, jc - 1, i - 1], mue[2, 3, jc - 1, i - 1]);
+                    mueller_out.WriteLine("        {0,16:e7} {1,16:e7} {2,16:e7} {3,16:e7}", mue[3, 0, jc - 1, i - 1], mue[3, 1, jc - 1, i - 1], mue[3, 2, jc - 1, i - 1], mue[3, 3, jc - 1, i - 1]);
                 }
             }
             mueller_out.WriteLine("phi (in degrees): 360");
             for (int i = 1; i <= nang2; i++)
             {
-                mueller_out.WriteLine(dang[i - 1] + "   " + mue[0, 0, 0, i - 1] + "   " + mue[0, 1, 0, i - 1] + "   " + mue[0, 2, 0, i - 1] + "   " + mue[0, 3, 0, i - 1]);
-                mueller_out.WriteLine(mue[1, 0, 0, i - 1] + "   " + mue[1, 1, 0, i - 1] + "   " + mue[1, 2, 0, i - 1] + "   " + mue[1, 3, 0, i - 1]);
-                mueller_out.WriteLine(mue[2, 0, 0, i - 1] + "   " + mue[2, 1, 0, i - 1] + "   " + mue[2, 2, 0, i - 1] + "   " + mue[2, 3, 0, i - 1]);
-                mueller_out.WriteLine(mue[3, 0, 0, i - 1] + "   " + mue[3, 1, 0, i - 1] + "   " + mue[3, 2, 0, i - 1] + "   " + mue[3, 3, 0, i - 1]);
+                mueller_out.WriteLine("{0,7:f1} {1,16:e7} {2,16:e7} {3,16:e7} {4,16:e7}", dang[i - 1], mue[0, 0, 0, i - 1], mue[0, 1, 0, i - 1], mue[0, 2, 0, i - 1], mue[0, 3, 0, i - 1]);
+                mueller_out.WriteLine("        {0,16:e7} {1,16:e7} {2,16:e7} {3,16:e7}", mue[1, 0, 0, i - 1], mue[1, 1, 0, i - 1], mue[1, 2, 0, i - 1], mue[1, 3, 0, i - 1]);
+                mueller_out.WriteLine("        {0,16:e7} {1,16:e7} {2,16:e7} {3,16:e7}", mue[2, 0, 0, i - 1], mue[2, 1, 0, i - 1], mue[2, 2, 0, i - 1], mue[2, 3, 0, i - 1]);
+                mueller_out.WriteLine("        {0,16:e7} {1,16:e7} {2,16:e7} {3,16:e7}", mue[3, 0, 0, i - 1], mue[3, 1, 0, i - 1], mue[3, 2, 0, i - 1], mue[3, 3, 0, i - 1]);
             }
             mueller_out.Close();
             OUT.Close();

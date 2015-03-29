@@ -25,7 +25,7 @@ namespace GMM_FIELD
             Complex eiphi;
             Complex[] etot = new Complex[3];
             Complex cimn;
-            new normlz(Emn, nmax[nmax.Length - 1]);
+            new normlz(OUT,Emn, nmax[0]);
             double r = 0;
             int imn = 0;
             int jj = 0;
@@ -44,9 +44,9 @@ namespace GMM_FIELD
             for (int i = 1; i <= 3; i++)
                 grdstp[i - 1] = -grdmin[i - 1] * 2 / (ngrd[i - 1] - 1);
             StreamWriter grid_w = new StreamWriter("grid.out");
-            grid_w.WriteLine("number of grid points (nx, ny, nz): " + ngrd[0].ToString() + ", " + ngrd[1].ToString() + ", " + ngrd[2].ToString());
-            grid_w.WriteLine("grid corner (x0, y0, z0): " + grdmin[0].ToString() + ", " + grdmin[1].ToString() + ", " + grdmin[2].ToString());
-            grid_w.Write("grid step (dx, dy, dz): " + grdstp[0].ToString() + ", " + grdstp[1].ToString() + ", " + grdstp[2].ToString());
+            grid_w.WriteLine("number of grid points (nx, ny, nz):   " + ngrd[0].ToString() + "     " + ngrd[1].ToString() + "     " + ngrd[2].ToString());
+            grid_w.WriteLine("grid corner (x0, y0, z0):   " + grdmin[0].ToString() + "     " + grdmin[1].ToString() + "     " + grdmin[2].ToString());
+            grid_w.Write("grid step (dx, dy, dz):   " + grdstp[0].ToString() + "     " + grdstp[1].ToString() + "     " + grdstp[2].ToString());
             grid_w.Close();
             StreamWriter field_w = new StreamWriter("field.dat");
             func_vnorm vn = new func_vnorm();
@@ -65,7 +65,7 @@ namespace GMM_FIELD
                         etot[2] = cplx0;
                         for (int i = 1; i <= nL; i++)
                         {
-                            new carsphd(xt, x - r0[0, i - 1], y - r0[1, i - 1], z - r0[2, i - 1], out r, out sphi, out cphi);
+                            new carsphd(out xt, x - r0[0, i - 1], y - r0[1, i - 1], z - r0[2, i - 1], out r, out sphi, out cphi);
                             eiphi = new Complex(cphi, sphi);
                             if (r < r0[3, i - 1])
                             {
@@ -75,7 +75,7 @@ namespace GMM_FIELD
                             }
                             else
                             {
-                                new vswf(pi, tau, fnr, xt, nmp0, p, besj, besy, nmax[i - 1], k * r, sphi, cphi, Nmn3, Mmn3);
+                                new vswf(OUT, pi, tau, fnr, xt, nmp0, p, besj, besy, nmax[i - 1], k * r, sphi, cphi, Nmn3, Mmn3);
                                 escati[0] = cplx0;
                                 escati[1] = cplx0;
                                 escati[2] = cplx0;
@@ -86,6 +86,9 @@ namespace GMM_FIELD
                                     imn = imn + n;
                                     for (int m = -n; m <= -1; m++)
                                     {
+
+                                        /*значения переменной escati[] определяются не одинаково с приложением на fortran*/
+
                                         jj++;
                                         cimn = cplxi * ass[i - 1, jj - 1] * Emn[imn - 1] * Math.Pow((-1), m) * Complex.Pow(eiphi, (2 * m));
                                         escati[0] = escati[0] + cimn * Nmn3[0, imn - 1];
@@ -99,7 +102,7 @@ namespace GMM_FIELD
                                     for (int m = 0; m <= n; m++)
                                     {
                                         jj++;
-                                        cimn = cplxi * Emn[imn - 1] * ass[i - 1, jj - 1];
+                                        cimn = cplxi * Emn[imn - 1] * ass[i - 1, jj - 1];                         
                                         escati[0] = escati[0] + cimn * Nmn3[0, imn - 1];
                                         escati[1] = escati[1] - cimn * Nmn3[1, imn - 1];
                                         escati[2] = escati[2] + cimn * Nmn3[2, imn - 1];
@@ -115,11 +118,11 @@ namespace GMM_FIELD
                                 etot[2] = etot[2] + escatc[2];
                             }
                         }
-                        field_w.Write(x.ToString() + " " + y.ToString() + " " + z.ToString());
-                        field_w.Write("  ( " + etot[0].Real.ToString() + "," + etot[0].Imaginary.ToString() + " )  ");
-                        field_w.Write("  ( " + etot[1].Real.ToString() + "," + etot[1].Imaginary.ToString() + " )  ");
-                        field_w.Write("  ( " + etot[2].Real.ToString() + "," + etot[2].Imaginary.ToString() + " )  ");
-                        field_w.WriteLine("  " + vn.vnorm(etot));
+                        field_w.Write("{0,12:f5} {1,12:f5} {2,12:f5}", x, y, z);
+                        field_w.Write("{0,12:f9} {1,12:f9}", etot[0].Real, etot[0].Imaginary);
+                        field_w.Write("{0,12:f9} {1,12:f9}", etot[1].Real, etot[1].Imaginary);
+                        field_w.Write("{0,12:f9} {1,12:f9}", etot[2].Real, etot[2].Imaginary);
+                        field_w.WriteLine("{0,12:f9}",vn.vnorm(etot));
                         x = x + grdstp[0];
                     }
                     y = y + grdstp[1];
