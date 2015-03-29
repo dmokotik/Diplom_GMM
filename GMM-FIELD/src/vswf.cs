@@ -13,7 +13,6 @@ namespace GMM_FIELD
         public vswf(StreamWriter OUT, double[] pi,double[] tau,double[] fnr, double xt,int nmp0,double[] p,double[] besj,double[] besy, int nmax, double kr, double sphi, double cphi, Complex[,] Nmn3, Complex[,] Mmn3)
         {
             new pitaud(OUT,pi, tau, fnr, nmax, xt, nmp0);
-            
             new legdre(p, nmax, xt);
             new besseljd(besj, nmax, kr);
             new besselyd(besy, nmax, kr);
@@ -36,15 +35,11 @@ namespace GMM_FIELD
                         pmn = p[n];
                     else
                         pmn = pimn * Math.Sqrt(1 - xt * xt) / m;
-                    //OUT.WriteLine(pimn);
                     Mmn3[0, imn - 1] = -taumn * hankln * eimphi;
                     Mmn3[1, imn - 1] = cplxi * pimn * hankln * eimphi;
                     Nmn3[0, imn - 1] = n * (n + 1) * pmn * hankln * eimphi / kr;
                     Nmn3[1, imn - 1] = cplxi * pimn * psinpr * eimphi / kr;
                     Nmn3[2, imn - 1] = taumn * psinpr * eimphi / kr;
-                    //OUT.WriteLine(Nmn3[0, imn - 1] + "   " + Nmn3[1, imn - 1] + "   " + Nmn3[2, imn - 1]);
-                    //OUT.WriteLine(Mmn3[0, imn - 1] + "   " + Mmn3[1, imn - 1]);
-                    //OUT.WriteLine();
                 }
             }
         }     

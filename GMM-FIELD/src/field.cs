@@ -86,9 +86,6 @@ namespace GMM_FIELD
                                     imn = imn + n;
                                     for (int m = -n; m <= -1; m++)
                                     {
-
-                                        /*значения переменной escati[] определяются не одинаково с приложением на fortran*/
-
                                         jj++;
                                         cimn = cplxi * ass[i - 1, jj - 1] * Emn[imn - 1] * Math.Pow((-1), m) * Complex.Pow(eiphi, (2 * m));
                                         escati[0] = escati[0] + cimn * Nmn3[0, imn - 1];
@@ -104,11 +101,11 @@ namespace GMM_FIELD
                                         jj++;
                                         cimn = cplxi * Emn[imn - 1] * ass[i - 1, jj - 1];                         
                                         escati[0] = escati[0] + cimn * Nmn3[0, imn - 1];
-                                        escati[1] = escati[1] - cimn * Nmn3[1, imn - 1];
+                                        escati[1] = escati[1] + cimn * Nmn3[1, imn - 1];
                                         escati[2] = escati[2] + cimn * Nmn3[2, imn - 1];
                                         cimn = cplxi * Emn[imn - 1] * bs[i - 1, jj - 1];
                                         escati[1] = escati[1] + cimn * Mmn3[0, imn - 1];
-                                        escati[2] = escati[2] - cimn * Mmn3[1, imn - 1];
+                                        escati[2] = escati[2] + cimn * Mmn3[1, imn - 1];
                                         imn++;
                                     }
                                 }
