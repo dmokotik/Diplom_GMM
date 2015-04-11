@@ -40,6 +40,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
@@ -61,7 +62,7 @@
             this.groupBox1.ForeColor = System.Drawing.Color.Silver;
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(351, 253);
+            this.groupBox1.Size = new System.Drawing.Size(351, 271);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Исходные данные для расчета";
@@ -92,7 +93,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(6, 79);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(339, 166);
+            this.dataGridView1.Size = new System.Drawing.Size(339, 183);
             this.dataGridView1.TabIndex = 2;
             // 
             // Column1
@@ -145,6 +146,7 @@
             // groupBox3
             // 
             this.groupBox3.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox3.Controls.Add(this.button7);
             this.groupBox3.Controls.Add(this.button6);
             this.groupBox3.Controls.Add(this.button5);
             this.groupBox3.Controls.Add(this.button4);
@@ -154,10 +156,20 @@
             this.groupBox3.ForeColor = System.Drawing.Color.Silver;
             this.groupBox3.Location = new System.Drawing.Point(369, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(200, 253);
+            this.groupBox3.Size = new System.Drawing.Size(200, 271);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Расчет";
+            // 
+            // button7
+            // 
+            this.button7.ForeColor = System.Drawing.Color.Black;
+            this.button7.Location = new System.Drawing.Point(6, 195);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(188, 38);
+            this.button7.TabIndex = 6;
+            this.button7.Text = "Записать полученные результаты в хранилище";
+            this.button7.UseVisualStyleBackColor = true;
             // 
             // button6
             // 
@@ -186,7 +198,7 @@
             // button4
             // 
             this.button4.ForeColor = System.Drawing.Color.Black;
-            this.button4.Location = new System.Drawing.Point(101, 222);
+            this.button4.Location = new System.Drawing.Point(101, 239);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(93, 23);
             this.button4.TabIndex = 3;
@@ -198,7 +210,7 @@
             // 
             this.button3.Enabled = false;
             this.button3.ForeColor = System.Drawing.Color.Black;
-            this.button3.Location = new System.Drawing.Point(6, 222);
+            this.button3.Location = new System.Drawing.Point(6, 239);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(93, 23);
             this.button3.TabIndex = 2;
@@ -234,7 +246,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::GMM_FIELD.Properties.Resources.V_25uirhfcQ;
-            this.ClientSize = new System.Drawing.Size(576, 274);
+            this.ClientSize = new System.Drawing.Size(576, 296);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Name = "GMM";
@@ -268,5 +280,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
+        private System.Windows.Forms.Button button7;
     }
 }

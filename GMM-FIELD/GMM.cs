@@ -143,7 +143,7 @@ namespace GMM_FIELD
             double[] cextyi = new double[nLp], cabsyi = new double[nLp], cscai = new double[nLp], cexti = new double[nLp];
             double[] cabsi = new double[nLp], assymxi = new double[nLp], assymyi = new double[nLp], assymi = new double[nLp];
             double[] cprxi = new double[nLp], cpryi = new double[nLp], cpri = new double[nLp];
-            Complex A, B, cmz, A0=0, B0=0, Aj, Bj, Aj2, Bj2, A2=new Complex(0,0), B2=new Complex(0,0), ephi, ci, cin;
+            Complex A=0, B, cmz, A0=0, B0=0, Aj, Bj, Aj2, Bj2, A2=new Complex(0,0), B2=new Complex(0,0), ephi, ci, cin;
             Complex[,] atr0 = new Complex[ni0, nij], btr0 = new Complex[ni0, nij], atr1 = new Complex[ni0, nij], btr1 = new Complex[ni0, nij];
             Complex[] at = new Complex[nmp], bt = new Complex[nmp], reff = new Complex[nLp], an = new Complex[np], bn = new Complex[np];
             Complex[,] ek = new Complex[np, nij], p0 = new Complex[nLp, nmp], q0 = new Complex[nLp, nmp];
@@ -167,14 +167,11 @@ namespace GMM_FIELD
             ci = new Complex(0, 1);
             cin = new Complex(0, -1);
             #endregion
-
             #region
             //файл "gmm01f.in"
             obj = spl[1].Split(';');
             int nbeta = Convert.ToInt32(obj[0]), nthet = Convert.ToInt32(obj[1]), nphai = Convert.ToInt32(obj[2]);
-
             OUT.WriteLine("nbeta,nthet,nphai: " + nbeta + ", " + nthet + ", " + nphai);
-
             if (nbeta > MOR || nthet > MOR || nphai > MOR)
             {
                 OUT.WriteLine("***  parameter MOR too small  ***");
@@ -184,12 +181,7 @@ namespace GMM_FIELD
                 OUT.Close();
                 Close();
             }
-            //double idran;
             double nram;
-            //if (nbeta * nphai > 1)
-            //    idran = 1;
-            //else
-            //    idran = 0;
             nram = nbeta * nthet * nphai;
             if (nram < 1)
             {
@@ -207,14 +199,10 @@ namespace GMM_FIELD
                 thetmx = thetmi;
             if (nphai == 1)
                 phaimx = phaimi;
-
             OUT.WriteLine("Ranges of Euler angles: " + betami + " " + betamx + " " + thetmi + " " + thetmx + " " + phaimi + " " + phaimx);
-
             obj = spl[3].Split(';');
             double idMie = Convert.ToDouble(obj[0]);
-
             OUT.WriteLine("idMie: " + idMie);
-
             int idd = Convert.ToInt32(obj[1]);
             if(nram==1&&idd==1)
             {
@@ -237,40 +225,28 @@ namespace GMM_FIELD
                 thetr[nthet] = 0;
                 phair[nphai] = 0;
             }
-
             OUT.WriteLine("idd: " + idd);
-
             if (idd == 1)
                 nram = 2 * nram;
-
             OUT.WriteLine("# of orientations to be averaged: " + nram);
-
             if(idc<0)
                 OUT.WriteLine("idc,iseed: " + idc+"  "+iseed);
             else
                 OUT.WriteLine("idc: " + idc);
-
             obj = spl[5].Split(';');
             double factor1 = Convert.ToDouble(obj[0]),
                     factor2 = Convert.ToDouble(obj[1]),
                     MXINT = Convert.ToDouble(obj[2]);
-
             OUT.WriteLine("Numerical factors for convergence: " + factor1 + "  " + factor2);
             OUT.WriteLine("Maximum iterations allowed: " + MXINT);
-
             obj = spl[6].Split(';');
             int NADD = Convert.ToInt32(obj[0]);
-
             OUT.WriteLine("Scat. orders added to Wiscombe criterion: " + NADD);
-
-            double eps = 1/Math.Pow(10, 20), small = 1/Math.Pow(10, 10);
-
+            double eps = 1/Math.Pow(10, 20), small = 1/Math.Pow(10, 6);
             OUT.WriteLine("error tolerance for Mie-expansions: " + eps);
             OUT.WriteLine("Convergence criterion: " + small);
-
             obj = spl[7].Split(';');
             double fint = Convert.ToDouble(obj[0]);
-
             if (fint < 0 || fint > 1)
             {
                 fint = 0.02;
@@ -278,12 +254,9 @@ namespace GMM_FIELD
             }
             else
                 OUT.WriteLine("Interaction index: " + fint);
-
             obj = spl[8].Split(';');
             double sang = Convert.ToDouble(obj[0]), pang = Convert.ToDouble(obj[1]);
-
             OUT.WriteLine("scat.-angle-interval in output: " + sang);
-
             if (sang <= 0)
                 sang = 1;
             double nang = 90 / sang + 1;
@@ -298,9 +271,7 @@ namespace GMM_FIELD
                 OUT.Close();
                 Close();
             }
-
             OUT.WriteLine("azimuth-angle-interval in Mueller matrix output: " + pang);
-
             double npng;
             if (pang < 0.0001)
                 npng = 1;
@@ -333,7 +304,7 @@ namespace GMM_FIELD
             // файл "Ag-Si-2s-405nm.k"
             obj = spl[9].Split(';');
             double w = Convert.ToDouble(obj[0]);
-            int nL = 2;    //textBox1.Text
+            int nL = 5;    //textBox1.Text
             if (nL > nLp)
             {
                 OUT.WriteLine("Parameter nLp too small, must be > " +nL);
@@ -344,18 +315,40 @@ namespace GMM_FIELD
             if (nL == 1)
                 idMie = 1;
 
-            r0[0,0]=0;
+            r0[0,0]=-6.4;
             r0[1,0]=0;
-            r0[2,0]=-0.04;
-            r0[3,0]=0.04;
-            r0[4, 0] = 1.15402;
-            r0[5, 0] = 1.88224;
+            r0[2, 0] = 6.4;
+            r0[3, 0] = 3.2;
+            r0[4, 0] = 1.615;
+            r0[5, 0] = 0.008;
+
             r0[0,1]=0;
             r0[1,1]=0;
-            r0[2, 1] = 0.36;
-            r0[3, 1] = -0.16;
-            r0[4, 1] = 1.54928;
-            r0[5, 1] = 0.21614;
+            r0[2, 1] = 6.4;
+            r0[3, 1] = 3.2;
+            r0[4, 1] = 1.615;
+            r0[5, 1] = 0.008;
+
+            r0[0, 2] = 6.4;
+            r0[1, 2] = 0;
+            r0[2, 2] = 6.4;
+            r0[3, 2] = 3.2;
+            r0[4, 2] = 1.615;
+            r0[5, 2] = 0.008;
+
+            r0[0, 3] = -6.4;
+            r0[1, 3] = 0;
+            r0[2, 3] = 0;
+            r0[3, 3] = 3.2;
+            r0[4, 3] = 1.615;
+            r0[5, 3] = 0.008;
+
+            r0[0, 4] = 0;
+            r0[1, 4] = 0;
+            r0[2, 4] = 0;
+            r0[3, 4] = 3.2;
+            r0[4, 4] = 1.615;
+            r0[5, 4] = 0.008;
             //for (int i = 0; i < nL; i++)
             //    for (int j = 0; j < 6; j++)
             //        r0[j, i] = Convert.ToDouble(dataGridView1[j, i].Value);
@@ -384,9 +377,7 @@ namespace GMM_FIELD
             k = twopi / w;
             xv = k * gcvr;
             xs = k * gcsr;
-
             OUT.WriteLine("volume-equiv. xv: " + xv + "   surface-equiv. xs: " + xs);
-
             double temp1, temp2;
             for (int i = 1; i <= nL; i++)
             {
@@ -416,8 +407,6 @@ namespace GMM_FIELD
                     {
                         OUT.WriteLine("Parameter np too small, must be > " + nmax[i - 1]);
                         OUT.WriteLine("Please change np in gmm01f.par, recompile, then try again");
-                       // OUT.Close();
-                        
                     }
                     else
                     {
@@ -450,7 +439,6 @@ namespace GMM_FIELD
                 if (nmax[i - 1] > nmax0)
                     nmax0 = nmax[i - 1];
             }
-            //StreamWriter gmm01f_w = new StreamWriter("gmm01f.out");
             double cextx = 0, cexty = 0, cabsx = 0, cabsy = 0, cscax = 0;
             double cscay = 0, cprx = 0, cpry = 0, cbakx = 0, cbaky = 0;
             for (int i = 1; i <= nL; i++)
@@ -484,7 +472,6 @@ namespace GMM_FIELD
             OUT.WriteLine(ii+"   "+ r0[0, 0]+"   "+ r0[1, 0]+"   "+ r0[2, ii-1]);
             ii = nL;
             OUT.WriteLine(ii + "   " + r0[0, ii-1] + "   " + r0[1, ii-1] + "   " + r0[2, ii - 1]);
-
             int nphaic;
             if (idpq == 1)
             {
@@ -493,9 +480,7 @@ namespace GMM_FIELD
             }
             else
                 nphaic = nphai;
-            //OUT.Close();
 #endregion
-
             double nthetc;
             double alph;
             double ca, sa, beta, cb, sb, cz, sz;
@@ -503,7 +488,6 @@ namespace GMM_FIELD
             double temp, factor;
             int nlarge;
             double xd;
-            double cext0, cext1;
             int irc, n1, itrc, indpol, imn;
             ran1 ran = new ran1();
             for (int ibeta = 1; ibeta <= nbeta; ibeta++)
@@ -593,7 +577,6 @@ namespace GMM_FIELD
                                         y0 = r0[1, i - 1] - r0[1, j - 1];
                                         z0 = r0[2, i - 1] - r0[2, j - 1];
                                         new carsphd(out xt,x0, y0, z0, out d, out sphi, out cphi);
-                                        
                                         temp = (r0[3, i - 1] + r0[3, j - 1]) / d;
                                         if (temp > fint)
                                         {
@@ -605,7 +588,7 @@ namespace GMM_FIELD
                                             int nbes = 2 * nlarge + 1;
                                             new besseljd(besj, nbes, xd);
                                             new besselyd(besy, nbes, xd);
-                                            new rotcoef(np, dc,bcof, fnr, xt, nlarge);
+                                            new rotcoef(OUT, np,dc,bcof, fnr, xt, nlarge);
                                             irc = 0;
                                             for (int n = 1; n <= nlarge; n++)
                                             {
@@ -627,19 +610,17 @@ namespace GMM_FIELD
                                                     for (v = n1; v <= nlarge; v++)
                                                     {
                                                         itrc = itrc + 1;
-                                                        /*atr0,btr0,atr1,btr1 (определяются неверно)*/
                                                         new cofxuds0(cof0, iga0, ga0,nmax0, m, n, v, besj, besy,out atr0[itrc - 1, ij - 1],out btr0[itrc - 1, ij - 1],out atr1[itrc - 1, ij - 1],out btr1[itrc - 1, ij - 1]);
                                                     }
                                             }
                                         }
                                     }
                                 }
+                                //atr1, btr1
                                 indpol = 0;
                                 factor = factor1;
-                                
                                 OUT.WriteLine("orien.# " + iram+"     Solving for x-pol. inci. state");
-                                #endregion
-                                #region
+#endregion
                                 bool F = true;
                                 while (F)
                                 {
@@ -678,318 +659,9 @@ namespace GMM_FIELD
                                             bs[i - 1, imn - 3] = q0[i - 1, imn - 3];
                                         }
                                     }
-                                    bool flag = true;
-                                    if (idMie == 1 || nL == 1)
-                                        flag = false;
-                                    if (flag)
-                                    {
-                                        for (int i = 1; i <= nL; i++)
-                                        {
-                                            ind[i - 1] = 0;
-                                            c0i[i - 1] = 0;
-                                            for (int n = 1; n <= nmax[i - 1]; n++)
-                                            {
-                                                imn = n * n + n + 1;
-                                                c0i[i - 1] = c0i[i - 1] + (p0[i - 1, imn - 1] * Complex.Conjugate(p0[i - 1, imn - 1])).Real;
-                                                c0i[i - 1] = c0i[i - 1] + (q0[i - 1, imn - 1] * Complex.Conjugate(q0[i - 1, imn - 1])).Real;
-                                                c0i[i - 1] = c0i[i - 1] + (p0[i - 1, imn - 3] * Complex.Conjugate(p0[i - 1, imn - 3])).Real;
-                                                c0i[i - 1] = c0i[i - 1] + (q0[i - 1, imn - 3] * Complex.Conjugate(q0[i - 1, imn - 3])).Real;
-                                            }
-                                        }
-                                        double niter = 1;
-                                        bool flag2 = true;
-                                        if (factor1 < 0.001 && factor2 < 0.001)
-                                            flag2 = false;
-                                        if (flag2)
-                                        {
-                                            if (iram == 1)
-                                                OUT.WriteLine("Starting iteration solution process");
-                                            for (int i = 1; i <= nL; i++)
-                                                for (imn = 1; imn <= uvmax[i - 1]; imn++)
-                                                {
-                                                    as0[i - 1, imn - 1] = p0[i - 1, imn - 1];
-                                                    bs0[i - 1, imn - 1] = q0[i - 1, imn - 1];
-                                                }
-                                            while (flag2)
-                                            {
-                                                new trans(np, atr, d, nmp, nL, r0, nmax, uvmax, fint, atr0, btr0, ek, drot, as0, bs0, as1, bs1, ind);
-                                                for (int i = 1; i <= nL; i++)
-                                                {
-                                                    if (ind[i - 1] <= 0)
-                                                    {
-                                                        c1i[i - 1] = 0;
-                                                        for (imn = 1; imn <= uvmax[i - 1]; imn++)
-                                                        {
-                                                            int n = (int)Math.Sqrt((double)imn);
-                                                            as0[i - 1, imn - 1] = p0[i - 1, imn - 1] - aMie[i - 1, n - 1] * as1[i - 1, imn - 1];
-                                                            bs0[i - 1, imn - 1] = q0[i - 1, imn - 1] - bMie[i - 1, n - 1] * bs1[i - 1, imn - 1];
-                                                            A = as0[i - 1, imn - 1] - ass[i - 1, imn - 1];
-                                                            B = bs0[i - 1, imn - 1] - bs[i - 1, imn - 1];
-                                                            c1i[i - 1] = c1i[i - 1] + (A * Complex.Conjugate(A)).Real;
-                                                            c1i[i - 1] = c1i[i - 1] + (B * Complex.Conjugate(B)).Real;
-                                                            as0[i - 1, imn - 1] = ass[i - 1, imn - 1] + factor * A;
-                                                            bs0[i - 1, imn - 1] = bs[i - 1, imn - 1] + factor * B;
-                                                            ass[i - 1, imn - 1] = as0[i - 1, imn - 1];
-                                                            bs[i - 1, imn - 1] = bs0[i - 1, imn - 1];
-                                                        }
-                                                    }
-                                                }                                         
-                                                cext0 = 0;
-                                                cext1 = 0;
-                                                for (int i = 1; i <= nL; i++)
-                                                {
-                                                    if (ind[i - 1] <= 0)
-                                                    {
-                                                        cext0 = cext0 + c0i[i - 1];
-                                                        cext1 = cext1 + c1i[i - 1];
-                                                        temp = c1i[i - 1] / c0i[i - 1];
-                                                        if (temp < small)
-                                                            ind[i - 1] = 1;
-                                                    }         
-                                                }
-                                                temp = cext1 / cext0;
-                                                if (temp < small)
-                                                {
-                                                    flag = false;
-                                                    flag2 = false;
-                                                }
-                                                if (flag)
-                                                {
-                                                    if (iram == 1 || iram == nram)
-                                                        OUT.WriteLine("iteration #  " + niter + "   " + temp);
-                                                    if (niter > MXINT)
-                                                    {
-                                                        OUT.WriteLine("*** Maximum iterations exceeded ***");
-                                                        OUT.WriteLine("*** Switched to Bi-CGSTAB method***");
-                                                        for (int i = 1; i <= nL; i++)
-                                                        {
-                                                            ind[i - 1] = 0;
-                                                            for (imn = 1; imn <= uvmax[i - 1]; imn++)
-                                                            {
-                                                                ass[i - 1, imn - 1] = p0[i - 1, imn - 1];
-                                                                bs[i - 1, imn - 1] = q0[i - 1, imn - 1];
-                                                            }
-                                                        }
-                                                        niter = 1;
-                                                        flag2 = false;
-                                                    }
-                                                    niter = niter + 1;
-                                                }
-                                            }
-                                        }
-                                        if (flag)
-                                        {
-                                            if (iram == 1)
-                                                OUT.WriteLine("Starting Bi-CGSTAB solution process");
-                                            new trans(np, atr, d, nmp, nL, r0, nmax, uvmax, fint, atr0, btr0, ek, drot, ass, bs, as1, bs1, ind);
-                                            for (int i = 1; i <= nL; i++)
-                                            {
-                                                c1i[i - 1] = 0;
-                                                for (imn = 1; imn <= uvmax[i - 1]; imn++)
-                                                {
-                                                    int n = (int)Math.Sqrt((double)imn);
-                                                    as1[i - 1, imn - 1] = -aMie[i - 1, n - 1] * as1[i - 1, imn - 1];
-                                                    bs1[i - 1, imn - 1] = -bMie[i - 1, n - 1] * bs1[i - 1, imn - 1];
-                                                    c1i[i - 1] = c1i[i - 1] + (as1[i - 1, imn - 1] * Complex.Conjugate(as1[i - 1, imn - 1])).Real;
-                                                    c1i[i - 1] = c1i[i - 1] + (bs1[i - 1, imn - 1] * Complex.Conjugate(bs1[i - 1, imn - 1])).Real;
-                                                }
-                                            }
-                                            temp = 0;
-                                            for (int i = 1; i <= nL; i++)
-                                            {
-                                                cext0 = c1i[i - 1] / c0i[i - 1];
-                                                if (cext0 < small)
-                                                    ind[i - 1] = 1;
-                                                if (cext0 > temp)
-                                                    temp = cext0;
-                                            }
-                                            if (temp < small)
-                                                flag = false;
-                                            if (flag)
-                                            {
-                                                A0 = new Complex(0, 0);
-                                                for (int i = 1; i <= nL; i++)
-                                                {
-                                                    if (ind[i - 1] <= 0)
-                                                    {
-                                                        for (imn = 1; imn <= uvmax[i - 1]; imn++)
-                                                        {
-                                                            asp[i - 1, imn - 1] = as1[i - 1, imn - 1];
-                                                            bsp[i - 1, imn - 1] = bs1[i - 1, imn - 1];
-                                                            as0[i - 1, imn - 1] = as1[i - 1, imn - 1];
-                                                            bs0[i - 1, imn - 1] = bs1[i - 1, imn - 1];
-                                                            A0 = A0 + as1[i - 1, imn - 1] * as1[i - 1, imn - 1];
-                                                            A0 = A0 + bs1[i - 1, imn - 1] * bs1[i - 1, imn - 1];
-                                                        }
-                                                    }
-                                                }
-                                                bool flag3 = true;
-                                                while (flag3)
-                                                {
-                                                    new trans(np, atr, d, nmp, nL, r0, nmax, uvmax, fint, atr0, btr0, ek, drot, asp, bsp, asv, bsv, ind);
-                                                    for (int i = 1; i <= nL; i++)
-                                                    {
-                                                        if (ind[i - 1] <= 0)
-                                                        {
-                                                            for (imn = 1; imn <= uvmax[i - 1]; imn++)
-                                                            {
-                                                                int n = (int)Math.Sqrt((double)imn);
-                                                                asv[i - 1, imn - 1] = aMie[i - 1, n - 1] * asv[i - 1, imn - 1] + asp[i - 1, imn - 1];
-                                                                bsv[i - 1, imn - 1] = bMie[i - 1, n - 1] * bsv[i - 1, imn - 1] + bsp[i - 1, imn - 1];
-                                                            }
-                                                        }
-                                                    }
-                                                    A = new Complex(0, 0);
-                                                    for (int i = 1; i <= nL; i++)
-                                                    {
-                                                        if (ind[i - 1] <= 0)
-                                                        {
-                                                            for (imn = 1; imn <= uvmax[i - 1]; imn++)
-                                                            {
-                                                                A = A + asv[i - 1, imn - 1] * as1[i - 1, imn - 1];
-                                                                A = A + bsv[i - 1, imn - 1] * bs1[i - 1, imn - 1];
-                                                            }
-                                                        }
-                                                    }
-                                                    Aj = A0 / A;
-                                                    for (int i = 1; i <= nL; i++)
-                                                    {
-                                                        if (ind[i - 1] <= 0)
-                                                        {
-                                                            for (imn = 1; imn <= uvmax[i - 1]; imn++)
-                                                            {
-                                                                asc[i - 1, imn - 1] = as0[i - 1, imn - 1] - Aj * asv[i - 1, imn - 1];
-                                                                bsc[i - 1, imn - 1] = bs0[i - 1, imn - 1] - Aj * bsv[i - 1, imn - 1];
-                                                            }
-                                                        }
-                                                    }
-                                                    new trans(np, atr, d, nmp, nL, r0, nmax, uvmax, fint, atr0, btr0, ek, drot, asc, bsc, ast, bst, ind);
-                                                    for (int i = 1; i <= nL; i++)
-                                                    {
-                                                        if (ind[i - 1] <= 0)
-                                                        {
-                                                            for (imn = 1; imn <= uvmax[i - 1]; imn++)
-                                                            {
-                                                                int n = (int)Math.Sqrt((double)imn);
-                                                                ast[i - 1, imn - 1] = aMie[i - 1, n - 1] * ast[i - 1, imn - 1] + asc[i - 1, imn - 1];
-                                                                bst[i - 1, imn - 1] = bMie[i - 1, n - 1] * bst[i - 1, imn - 1] + bsc[i - 1, imn - 1];
-                                                            }
-                                                        }
-                                                    }
-                                                    for (int i = 1; i <= nL; i++)
-                                                    {
-                                                        if (ind[i - 1] <= 0)
-                                                        {
-                                                            for (imn = 1; imn <= uvmax[i - 1]; imn++)
-                                                            {
-                                                                A2 = A2 + ast[i - 1, imn - 1] * asc[i - 1, imn - 1];
-                                                                A2 = A2 + bst[i - 1, imn - 1] * bsc[i - 1, imn - 1];
-                                                                B2 = B2 + ast[i - 1, imn - 1] * ast[i - 1, imn - 1];
-                                                                B2 = B2 + bst[i - 1, imn - 1] * bst[i - 1, imn - 1];
-                                                            }
-                                                        }
-                                                    }
-                                                    Bj = A2 / B2;
-                                                    for (int i = 1; i <= nL; i++)
-                                                    {
-                                                        if (ind[i - 1] <= 0)
-                                                        {
-                                                            c1i[i - 1] = 0;
-                                                            for (imn = 1; imn <= uvmax[i - 1]; imn++)
-                                                            {
-                                                                Aj2 = Aj * asp[i - 1, imn - 1] + Bj * asc[i - 1, imn - 1];
-                                                                Bj2 = Aj * bsp[i - 1, imn - 1] + Bj * bsc[i - 1, imn - 1];
-                                                                c1i[i - 1] = c1i[i - 1] + (Aj2 * Complex.Conjugate(Aj2)).Real;
-                                                                c1i[i - 1] = c1i[i - 1] + (Bj2 * Complex.Conjugate(Bj2)).Real;
-                                                                ass[i - 1, imn - 1] = ass[i - 1, imn - 1] + Aj2;
-                                                                bs[i - 1, imn - 1] = bs[i - 1, imn - 1] + Bj2;
-                                                            }
-                                                        }
-                                                    }
-                                                    cext0 = 0;
-                                                    cext1 = 0;
-                                                    for (int i = 1; i <= nL; i++)
-                                                    {
-                                                        if (ind[i - 1] <= 0)
-                                                        {
-                                                            cext0 = cext0 + c0i[i - 1];
-                                                            cext1 = cext1 + c1i[i - 1];
-                                                        }
-                                                    }
-                                                    temp = cext1 / cext0;
-                                                    if (temp < small)
-                                                    {
-                                                        flag = false;
-                                                        flag3 = false;
-                                                    }
-                                                    if (niter > MXINT)
-                                                    {
-                                                        OUT.WriteLine("Caution:");
-                                                        OUT.WriteLine("*** Maximum iterations exceeded ***");
-                                                        flag = false;
-                                                        flag3 = false;
-                                                    }
-                                                    if (flag)
-                                                    {
-                                                        if (iram == 1 || iram == nram)
-                                                            OUT.WriteLine("iteration #  " + niter + "   " + temp);
-                                                        for (int i = 1; i <= nL; i++)
-                                                        {
-                                                            if (ind[i - 1] <= 0)
-                                                            {
-                                                                for (imn = 1; imn <= uvmax[i - 1]; imn++)
-                                                                {
-                                                                    as0[i - 1, imn - 1] = asc[i - 1, imn - 1] - Bj * ast[i - 1, imn - 1];
-                                                                    bs0[i - 1, imn - 1] = bsc[i - 1, imn - 1] - Bj * bst[i - 1, imn - 1];
-                                                                }
-                                                            }
-                                                        }
-                                                        A2 = new Complex(0, 0);
-                                                        for (int i = 1; i <= nL; i++)
-                                                        {
-                                                            ast[i - 1, 0] = new Complex(0, 0);
-                                                            if (ind[i - 1] <= 0)
-                                                            {
-                                                                for (imn = 1; imn <= uvmax[i - 1]; imn++)
-                                                                {
-                                                                    ast[i - 1, 0] = ast[i - 1, 0] + as0[i - 1, imn - 1] * as1[i - 1, imn - 1];
-                                                                    ast[i - 1, 0] = ast[i - 1, 0] + bs0[i - 1, imn - 1] * bs1[i - 1, imn - 1];
-                                                                }
-                                                                A2 = A2 + ast[i - 1, 0];
-                                                            }
-                                                        }
-                                                        B0 = A2 / A0;
-                                                        B0 = B0 * Aj / Bj;
-                                                        for (int i = 1; i <= nL; i++)
-                                                        {
-                                                            if (ind[i - 1] <= 0)
-                                                            {
-                                                                for (imn = 1; imn <= uvmax[i - 1]; imn++)
-                                                                {
-                                                                    asp[i - 1, imn - 1] = as0[i - 1, imn - 1] + B0 * (asp[i - 1, imn - 1] - Bj * asv[i - 1, imn - 1]);
-                                                                    bsp[i - 1, imn - 1] = bs0[i - 1, imn - 1] + B0 * (bsp[i - 1, imn - 1] - Bj * bsv[i - 1, imn - 1]);
-                                                                }
-                                                            }
-                                                        }
-                                                        A0 = new Complex(0, 0);
-                                                        for (int i = 1; i <= nL; i++)
-                                                        {
-                                                            if (ind[i - 1] <= 0)
-                                                            {
-                                                                cext0 = c1i[i - 1] / c0i[i - 1];
-                                                                if (cext0 < small)
-                                                                    ind[i - 1] = 1;
-                                                                else
-                                                                    A0 = A0 + ast[i - 1, 0];
-                                                            }
-                                                        }
-                                                        niter = niter + 1;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
                                     #endregion
+                                    if(idMie!=1&&nL!=1)
+                                        new solver(nL,ind,c0i,nmax,p0,q0,factor1,factor2,iram,OUT,uvmax,as0,bs0,np,atr,nmp,r0,fint,atr0,btr0,ek,drot,as1,bs1,c1i,aMie,bMie,ass,bs,factor,small, MXINT,nram,asp,bsp,asv,bsv,asc,bsc,ast,bst,A2,B2);
                                     for (int i = 1; i <= nL; i++)
                                         ind[i - 1] = 0;
                                     if (indpol == 0)
@@ -997,7 +669,7 @@ namespace GMM_FIELD
                                         OUT.WriteLine("Calculating near-field. "+indpol);
                                         new field(Nmn3, Mmn3,escati, escatc, nmp0, fnr, besj, besy, pi, tau, p, OUT, Emn, xt, sphi, cphi, nL, r0, k, nmax, ass, bs);
                                     }
-                                    new trans(np, atr, d, nmp, nL, r0, nmax, uvmax, fint, atr1, btr1, ek, drot, ass, bs, as1, bs1, ind);
+                                    new trans(OUT,np, atr, nmp, nL, r0, nmax, uvmax, fint, atr1, btr1, ek, drot, ass, bs, as1, bs1, ind);
                                     for (int i = 1; i <= nL; i++)
                                     {
                                         
@@ -1305,8 +977,6 @@ namespace GMM_FIELD
                                     else
                                         OUT.WriteLine("orien.# " + iram + "     Solving for y-pol. inci. state");
                                 }
-                                #endregion
-                                
                                 for (int i = 1; i <= nang2; i++)
                                 {
                                     i22[i - 1] = i22[i - 1] + Complex.Abs(s2x[0, i - 1]) * Complex.Abs(s2x[0, i - 1]);
@@ -1587,6 +1257,7 @@ namespace GMM_FIELD
             }
             mueller_out.Close();
             OUT.Close();
+            MessageBox.Show("Расчет распределения электромагнитного поля завершен! Для сохранения результатов нажмите на кнопку 'Записать полученные результаты в хранилище'");
         }
         private void button6_Click(object sender, EventArgs e)
         {

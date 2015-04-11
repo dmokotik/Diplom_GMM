@@ -34,6 +34,7 @@
             this.оПрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.закрытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
+            this.просмотрРезультатовРасчетаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,7 +56,8 @@
             // 
             this.файлToolStripMenuItem.BackColor = System.Drawing.Color.Transparent;
             this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.приступитьКРасчетамToolStripMenuItem});
+            this.приступитьКРасчетамToolStripMenuItem,
+            this.просмотрРезультатовРасчетаToolStripMenuItem});
             this.файлToolStripMenuItem.ForeColor = System.Drawing.Color.LightGray;
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
             this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
@@ -64,7 +66,7 @@
             // приступитьКРасчетамToolStripMenuItem
             // 
             this.приступитьКРасчетамToolStripMenuItem.Name = "приступитьКРасчетамToolStripMenuItem";
-            this.приступитьКРасчетамToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.приступитьКРасчетамToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
             this.приступитьКРасчетамToolStripMenuItem.Text = "Приступить к расчетам";
             this.приступитьКРасчетамToolStripMenuItem.Click += new System.EventHandler(this.приступитьКРасчетамToolStripMenuItem_Click);
             // 
@@ -100,6 +102,12 @@
     "лизи сферических \r\nчастиц обобщенным методом Ми.";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // просмотрРезультатовРасчетаToolStripMenuItem
+            // 
+            this.просмотрРезультатовРасчетаToolStripMenuItem.Name = "просмотрРезультатовРасчетаToolStripMenuItem";
+            this.просмотрРезультатовРасчетаToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+            this.просмотрРезультатовРасчетаToolStripMenuItem.Text = "Просмотр результатов расчета";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -126,6 +134,7 @@
         private System.Windows.Forms.ToolStripMenuItem оПрограммеToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem закрытьToolStripMenuItem;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripMenuItem просмотрРезультатовРасчетаToolStripMenuItem;
     }
 }
 
